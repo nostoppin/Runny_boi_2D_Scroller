@@ -29,6 +29,17 @@ public class Game_manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+
+        if (PlayerPrefs.GetInt("Audio") == 0)
+        {
+            this.GetComponent<AudioSource>().volume = 0;
+        }
+        else
+        {
+            this.GetComponent<AudioSource>().volume = 1;
+        }
+
         g_platform.GetComponent<Platform_handler>().g_platform_move_speed = 6;
         g_platform_Enemy_2.GetComponent<Platform_handler>().g_platform_move_speed = 6;
         g_platform_Enemy_3.GetComponent<Platform_handler>().g_platform_move_speed = 6;
@@ -93,11 +104,11 @@ public class Game_manager : MonoBehaviour
 
                     if (l_spawn_point_choice == 1)
                     {
-                        g_spawnValue_axisY = -0.05f;
+                        g_spawnValue_axisY = 1f;
                     }
                     if (l_spawn_point_choice == 2)
                     {
-                        g_spawnValue_axisY = -2.5f;
+                        g_spawnValue_axisY = -2.2f;
                     }
                     if (l_spawn_point_choice == 3)
                     {
@@ -134,17 +145,17 @@ public class Game_manager : MonoBehaviour
             if(i >= 0 && i < 5)
             {
                 g_platform_array[i] = Instantiate(g_platform, new Vector2(0, 0), Quaternion.identity);
-                g_platform_array[i].transform.name = "platform_" + (i + 1);
+                //g_platform_array[i].transform.name = "platform_" + (i + 1);
             }
             if (i >= 5 && i < 10)
             {
                 g_platform_array[i] = Instantiate(g_platform_Enemy_2, new Vector2(0, 0), Quaternion.identity);
-                g_platform_array[i].transform.name = "g_platform_Enemy_2_" + (i + 1);
+                //g_platform_array[i].transform.name = "g_platform_Enemy_2_" + (i + 1);
             }
             if (i >= 10 && i < g_platform_count)
             {
                 g_platform_array[i] = Instantiate(g_platform_Enemy_3, new Vector2(0, 0), Quaternion.identity);
-                g_platform_array[i].transform.name = "g_platform_Enemy_3_" + (i + 1);
+                //g_platform_array[i].transform.name = "g_platform_Enemy_3_" + (i + 1);
             }
             g_platform_array[i].SetActive(false);
         }

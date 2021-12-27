@@ -21,6 +21,15 @@ public class Enemy_3_controller : MonoBehaviour
     {
         g_enemy_jump_Velocity = 6f;
         g_enemy_inital_pos = this.transform.localPosition;
+
+        if (PlayerPrefs.GetInt("Audio") == 0)
+        {
+            this.GetComponent<AudioSource>().volume = 0;
+        }
+        else
+        {
+            this.GetComponent<AudioSource>().volume = 1;
+        }
     }
 
     // Update is called once per frame

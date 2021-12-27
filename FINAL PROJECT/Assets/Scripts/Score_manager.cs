@@ -14,9 +14,9 @@ public class Score_manager : MonoBehaviour
     void Start()
     {
         g_score_text.text = g_current_score.ToString();
-
-        //g_high_score_text.text = PlayerPrefs.GetInt("HighScore").ToString();
-    }
+        g_current_score = 0;
+    //g_high_score_text.text = PlayerPrefs.GetInt("HighScore").ToString();
+}
 
     // Update is called once per frame
     void Update()

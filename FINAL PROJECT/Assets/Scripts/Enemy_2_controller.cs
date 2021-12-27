@@ -31,6 +31,15 @@ public class Enemy_2_controller : MonoBehaviour
         g_platform_right_boundsX = 4f;
 
         g_enemy_inital_pos = this.transform.position;
+
+        if (PlayerPrefs.GetInt("Audio") == 0)
+        {
+            this.GetComponent<AudioSource>().volume = 0;
+        }
+        else
+        {
+            this.GetComponent<AudioSource>().volume = 1;
+        }
     }
 
     // Update is called once per frame

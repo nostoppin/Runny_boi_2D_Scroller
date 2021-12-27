@@ -23,6 +23,8 @@ public class Main_player_controller : MonoBehaviour
     public  Score_manager g_score_manager_instance;
 
     public BG_movement_manager g_bg_movement_sc_ref;
+    int g_jump_count = 0;
+    bool g_isJumping;
 
     public void m_animation_controller(int l_player_anim_state)
     {
@@ -38,18 +40,27 @@ public class Main_player_controller : MonoBehaviour
         }
     }
 
-     private void OnCollisionEnter2D(Collision2D l_Collision)
+     void OnCollisionEnter2D(Collision2D l_Collision)
     {
 
         //print("HELLO");
         if (l_Collision.transform.tag == "Platform")
         {
-            m_animation_controller(0); 
+            m_animation_controller(0);
+            g_isJumping = false;
         }
-       
+
+        if (l_Collision.transform.tag == "Enemy")
+        {
+            Time.timeScale = 0f;
+            
+            g_Game_over_handler_object.GetComponent<Game_over_handler>().m_to_game_over_Screen();
+            
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D l_Collision)
+
+    void OnTriggerEnter2D(Collider2D l_Collision)
     {
 
         if (l_Collision.transform.tag == "Coin")
@@ -61,24 +72,27 @@ public class Main_player_controller : MonoBehaviour
             g_score_manager_instance.m_change_Score(1);
             //SCORE
         }
-
-        if(l_Collision.transform.tag == "Enemy")
-        {
-            g_bg_movement_sc_ref.GetComponent<BG_movement_manager>().g_scroll_speed = 0f;
-            print("there");
-        }
     }
 
     private void m_player_control_manager()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        //jump
+        if (g_isJumping == true && Input.GetMouseButtonDown(0))
         {
+            g_player_rB.velocity = Vector2.up * g_player_jump_Velocity;
+            g_isJumping = false;
+        }
+        if (Input.GetMouseButtonDown(0) && g_player_rB.velocity.y == 0)
+        {
+            g_isJumping = true;
+            g_jump_count += 1;
             m_animation_controller(1);
             g_audioSource.clip = g_playerJump_sound_clip;
             g_audioSource.Play();
-
             g_player_rB.velocity = Vector2.up * g_player_jump_Velocity;
         }
+
+         
     }
 
     public void m_player_fall_dies()
@@ -92,15 +106,27 @@ public class Main_player_controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        g_player_jump_Velocity = 9f;
-
+        g_isJumping = false;
+        g_player_jump_Velocity = 7f;
+       
         this.transform.position = new Vector2(-9, -6f);
-        //g_player_rB = this.gameObject.GetComponent<Rigidbody2D>();
+
+        if(PlayerPrefs.GetInt("Audio") == 0)
+        {
+            g_audioSource.volume = 0;
+            g_audioSource_1.volume = 0;
+        }
+        else
+        {
+            g_audioSource.volume = 1;
+            g_audioSource_1.volume = 1;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //print(this.GetComponent<Rigidbody2D>().velocity.y);
         m_player_fall_dies();
         m_player_control_manager();
     }

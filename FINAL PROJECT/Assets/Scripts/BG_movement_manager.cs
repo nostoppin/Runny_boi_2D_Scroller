@@ -41,7 +41,7 @@ public class BG_movement_manager : MonoBehaviour
 
     void m_bg_bounds_evaluator()
     {
-        if(this.transform.position.x < -19)
+        if(this.transform.position.x < -25f)
         {
             g_sprite_spawnPoint = g_last_element_transform.position;
             g_sprite_spawnPoint.x += 18;
